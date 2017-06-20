@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.github.gino0631</groupId>
     <artifactId>clove-root</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
   </parent>
 
   <artifactId>clove-io</artifactId>
