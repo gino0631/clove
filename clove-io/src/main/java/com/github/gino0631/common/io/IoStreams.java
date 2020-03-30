@@ -1,10 +1,8 @@
 package com.github.gino0631.common.io;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Utilities for working with input and output streams.
@@ -92,6 +90,21 @@ public final class IoStreams {
     }
 
     private IoStreams() {
+    }
+
+    public static InputStream limit(InputStream is, Function<Byte, Boolean> condition) {
+        return new DelegatingInputStream(is) {
+            @Override
+            public int read() throws IOException {
+                int b = super.read();
+
+                if ((b != -1) && !condition.apply((byte) b)) {
+                    return b;
+                }
+
+                return -1;
+            }
+        };
     }
 
     public static InputStream limit(InputStream is, long limit) {
@@ -261,6 +274,33 @@ public final class IoStreams {
                 }
             }
         }
+    }
+
+    public static InputStream skipWhile(InputStream is, Function<Byte, Boolean> condition) throws IOException {
+        int b;
+
+        if (is.markSupported()) {
+            do {
+                is.mark(1);
+                b = is.read();
+            } while ((b != -1) && condition.apply((byte) b));
+
+            is.reset();
+
+        } else {
+            PushbackInputStream pis = new PushbackInputStream(is, 1);
+            is = pis;
+
+            do {
+                b = pis.read();
+            } while ((b != -1) && condition.apply((byte) b));
+
+            if (b != -1) {
+                pis.unread(b);
+            }
+        }
+
+        return is;
     }
 
     public static long skip(InputStream is, long count) throws IOException {
