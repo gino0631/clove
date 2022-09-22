@@ -3,7 +3,7 @@
 
   <groupId>com.github.gino0631</groupId>
   <artifactId>clove-root</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.2</version>
   <packaging>pom</packaging>
 
   <name>Clove Project Root</name>
@@ -31,7 +31,7 @@
     <connection>scm:git:git://github.com/gino0631/clove.git</connection>
     <developerConnection>scm:git:git@github.com:gino0631/clove.git</developerConnection>
     <url>https://github.com/gino0631/clove</url>
-    <tag>HEAD</tag>
+    <tag>clove-root-0.2</tag>
   </scm>
   <distributionManagement>
     <repository>
